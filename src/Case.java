@@ -1,4 +1,6 @@
-public class Case {
+import java.util.Observable;
+
+public class Case extends Observable {
     private int x;
     private int y;
     public Case() {
@@ -24,5 +26,7 @@ public class Case {
                 this.x++;
                 break;
         }
+        setChanged();
+        notifyObservers();
     }
 }
