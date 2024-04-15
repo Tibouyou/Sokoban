@@ -58,5 +58,11 @@ public class MF extends JFrame implements Observer {
 
     public void update(Observable o, Object arg) {
         System.out.println("update");
+        for (int i = 0; i < L; i++) {
+            for (int j = 0; j < H; j++) {
+                tabC[i][j].setBackground(Color.WHITE);
+            }
+        }
+        tabC[c.getY()][c.getX()].setBackground(Color.RED);
     }
 }

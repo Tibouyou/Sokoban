@@ -11,19 +11,25 @@ public class Case extends Observable {
         this.x = x;
         this.y = y;
     }
+    public int getX() {
+        return this.x;
+    }
+    public int getY() {
+        return this.y;
+    }
     public void move(Direction d) {
         switch (d) {
             case UP:
-                this.y--;
+                if (this.y > 0) this.y--;
                 break;
             case DOWN:
-                this.y++;
+                if (this.y < 9) this.y++;
                 break;
             case LEFT:
-                this.x--;
+                if (this.x > 0) this.x--;
                 break;
             case RIGHT:
-                this.x++;
+                if (this.x < 9) this.x++;
                 break;
         }
         setChanged();
