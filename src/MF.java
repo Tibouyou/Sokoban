@@ -8,7 +8,7 @@ import java.util.Observable;
 public class MF extends JFrame implements Observer {
     private static final int L = 10;
     private static final int H = 10;
-    private Case c;
+    private Case c = new Case();
     private JPanel[][] tabC = new JPanel[L][H];
 
 
@@ -17,6 +17,7 @@ public class MF extends JFrame implements Observer {
        addEC();
     }
     public void build() {
+        c.addObserver(this);
         JPanel jp = new JPanel(new BorderLayout());
         JPanel jpC = new JPanel(new GridLayout(L, H));
         JPanel jpInfo = new JPanel(new BorderLayout());
@@ -26,6 +27,7 @@ public class MF extends JFrame implements Observer {
         for (int i = 0; i < L; i++) {
             for (int j = 0; j < H; j++) {
                 tabC[i][j] = new JPanel();
+                tabC[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 jpC.add(tabC[i][j]);
             }
         }
@@ -54,13 +56,7 @@ public class MF extends JFrame implements Observer {
         requestFocus();
     }
 
-    @Override
     public void update(Observable o, Object arg) {
-            for (int i = 0; i < L; i++) {
-                for (int j = 0; j < H; j++) {
-                    tabC[i][j].setBackground(Color.BLACK);
-                }
-            }
+        System.out.println("update");
     }
-
 }

@@ -28,5 +28,6 @@ public class Case extends Observable {
         }
         setChanged();
         notifyObservers();
+        System.out.println("x: " + this.x + " y: " + this.y);
     }
 }
