@@ -1,6 +1,6 @@
 import java.util.Observable;
 
-public class Case extends Observable {
+public abstract class Case extends Observable {
     private int x;
     private int y;
     public Case() {
@@ -17,6 +17,9 @@ public class Case extends Observable {
     public int getY() {
         return this.y;
     }
+
+    public abstract boolean getType();
+
     public void move(Direction d) {
         switch (d) {
             case UP:

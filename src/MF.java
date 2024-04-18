@@ -8,16 +8,18 @@ import java.util.Observable;
 public class MF extends JFrame implements Observer {
     private static final int L = 10;
     private static final int H = 10;
-    private Case c = new Case();
+    private Player p = new Player();
     private JPanel[][] tabC = new JPanel[L][H];
+    private Grid g;
 
 
-    public MF() {
-       build();
-       addEC();
+    public MF(Grid g) {
+        this.g = g;
+        build();
+        addEC();
     }
     public void build() {
-        c.addObserver(this);
+        p.addObserver(this);
         JPanel jp = new JPanel(new BorderLayout());
         JPanel jpC = new JPanel(new GridLayout(L, H));
         JPanel jpInfo = new JPanel(new BorderLayout());
@@ -39,16 +41,16 @@ public class MF extends JFrame implements Observer {
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_UP:
-                        c.move(Direction.UP);
+                        p.move(Direction.UP);
                         break;
                     case KeyEvent.VK_DOWN:
-                        c.move(Direction.DOWN);
+                        p.move(Direction.DOWN);
                         break;
                     case KeyEvent.VK_LEFT:
-                        c.move(Direction.LEFT);
+                        p.move(Direction.LEFT);
                         break;
                     case KeyEvent.VK_RIGHT:
-                        c.move(Direction.RIGHT);
+                        p.move(Direction.RIGHT);
                         break;
                 }
             }
@@ -63,6 +65,6 @@ public class MF extends JFrame implements Observer {
                 tabC[i][j].setBackground(Color.WHITE);
             }
         }
-        tabC[c.getY()][c.getX()].setBackground(Color.RED);
+        tabC[p.getY()][p.getX()].setBackground(Color.RED);
     }
 }

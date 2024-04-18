@@ -1,9 +1,8 @@
 
 public class Main {
     public static void main(String[] args) {
-        Case c = new Case();
-        MF mf = new MF();
-        c.addObserver(mf);
+        Grid g = new Grid(10, 10);
+        MF mf = new MF(g);
         mf.setVisible(true);
     }
 }
