@@ -5,10 +5,9 @@ import java.awt.event.KeyEvent;
 import java.util.Observer;
 import java.util.Observable;
 
-public class MF extends JFrame implements Observer {
+public class MF extends JFrame {
     private static final int L = 10;
     private static final int H = 10;
-    private Player p = new Player();
     private JPanel[][] tabC = new JPanel[L][H];
     private Grid g;
 
@@ -19,7 +18,6 @@ public class MF extends JFrame implements Observer {
         addEC();
     }
     public void build() {
-        p.addObserver(this);
         JPanel jp = new JPanel(new BorderLayout());
         JPanel jpC = new JPanel(new GridLayout(L, H));
         JPanel jpInfo = new JPanel(new BorderLayout());
@@ -41,30 +39,42 @@ public class MF extends JFrame implements Observer {
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
                     case KeyEvent.VK_UP:
-                        p.move(Direction.UP);
+                        g.movePlayer(Direction.UP);
                         break;
                     case KeyEvent.VK_DOWN:
-                        p.move(Direction.DOWN);
+                        g.movePlayer(Direction.DOWN);
                         break;
                     case KeyEvent.VK_LEFT:
-                        p.move(Direction.LEFT);
+                        g.movePlayer(Direction.LEFT);
                         break;
                     case KeyEvent.VK_RIGHT:
-                        p.move(Direction.RIGHT);
+                        g.movePlayer(Direction.RIGHT);
                         break;
                 }
+                update();
             }
         });
         requestFocus();
     }
 
-    public void update(Observable o, Object arg) {
+    public void update() {
         System.out.println("update");
         for (int i = 0; i < L; i++) {
             for (int j = 0; j < H; j++) {
                 tabC[i][j].setBackground(Color.WHITE);
             }
         }
-        tabC[p.getY()][p.getX()].setBackground(Color.RED);
+        for (int i = 0; i < L; i++) {
+            for (int j = 0; j < H; j++) {
+                if (g.getEntity(i, j) != null) {
+                    if (g.getEntity(i, j) instanceof Box) {
+                        tabC[g.getEntity(i, j).getY()][g.getEntity(i, j).getX()].setBackground(Color.GREEN);
+                    }
+                    else if (g.getEntity(i, j) instanceof Player) {
+                        tabC[g.getEntity(i, j).getY()][g.getEntity(i, j).getX()].setBackground(Color.RED);
+                    }
+                }
+            }
+        }
     }
 }

@@ -17,5 +17,5 @@ public abstract class Entity extends Observable {
     public int getY() {
         return this.y;
     }
-    public abstract boolean move(Direction d);
+    public abstract boolean move(Direction d, Grid g);
 }
