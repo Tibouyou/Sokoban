@@ -58,10 +58,18 @@ public class MF extends JFrame {
     }
 
     public void update() {
-        System.out.println("update");
         for (int i = 0; i < L; i++) {
             for (int j = 0; j < H; j++) {
                 tabC[i][j].setBackground(Color.WHITE);
+            }
+        }
+        for (int i = 0; i < L; i++) {
+            for (int j = 0; j < H; j++) {
+                if (g.getCase(i, j) instanceof Wall) {
+                    tabC[g.getCase(i, j).getY()][g.getCase(i, j).getX()].setBackground(Color.BLACK);
+                } else if (g.getCase(i, j) instanceof Sensor) {
+                    tabC[g.getCase(i, j).getY()][g.getCase(i, j).getX()].setBackground(Color.BLUE);
+                }
             }
         }
         for (int i = 0; i < L; i++) {

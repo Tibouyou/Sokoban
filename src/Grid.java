@@ -18,6 +18,9 @@ public class Grid extends Observable implements Observer {
         this.entities[3][3] = new Box(3, 3);
         this.entities[4][4] = new Box(4, 4);
         this.entities[0][0] = this.player;
+        this.grid[1][1] = new Sensor(1, 1);
+        this.grid[2][2] = new Sensor(2, 2);
+        this.grid[7][3] = new Wall(7, 3);
         player.addObserver(this);
     }
 
@@ -53,7 +56,21 @@ public class Grid extends Observable implements Observer {
             }
         }
         this.entities = newEntities;
-        return;
+        System.out.println(this.isLevelWin());
+        setChanged();
+        notifyObservers();
+    }
+
+    public boolean isLevelWin() {
+        boolean isWin = true;
+        for (int i = 0; i < this.width; i++) {
+            for (int j = 0; j < this.height; j++) {
+                if (this.grid[i][j] instanceof Sensor) {
+                    isWin = isWin && ((Sensor) this.grid[i][j]).isActivated(this);
+                }
+            }
+        }
+        return isWin;
     }
 
     public Player getPlayer() {
