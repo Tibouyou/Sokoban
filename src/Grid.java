@@ -14,6 +14,11 @@ public class Grid extends Observable implements Observer {
         this.width = width;
         this.height = height;
         this.grid = new Case[width][height];
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                this.grid[i][j] = new Air(i, j);
+            }
+        }
         this.entities = new Entity[width][height];
         this.entities[3][3] = new Box(3, 3);
         this.entities[4][4] = new Box(4, 4);
@@ -22,6 +27,14 @@ public class Grid extends Observable implements Observer {
         this.grid[2][2] = new Sensor(2, 2);
         this.grid[7][3] = new Wall(7, 3);
         player.addObserver(this);
+    }
+
+    public int getWidth() {
+        return this.width;
+    }
+
+    public int getHeight() {
+        return this.height;
     }
 
     public void addCase(Case c) {

@@ -20,7 +20,7 @@ public class Player extends Entity{
                 }
                 break;
             case DOWN:
-                if (this.getY() < 9) {
+                if (this.getY() < g.getHeight() - 1) {
                     if (g.getEntity(this.getX(), this.getY() + 1) == null || g.getEntity(this.getX(), this.getY() + 1).move(d, g)) {
                         if (!(g.getCase(this.getX(), this.getY() + 1) instanceof Wall)) {
                             this.y++;
@@ -44,7 +44,7 @@ public class Player extends Entity{
                 }
                 break;
             case RIGHT:
-                if (this.getX() < 9) {
+                if (this.getX() < g.getWidth() - 1){
                     if (g.getEntity(this.getX() + 1, this.getY()) == null || g.getEntity(this.getX() + 1, this.getY()).move(d, g)) {
                         if (!(g.getCase(this.getX() + 1, this.getY()) instanceof Wall)) {
                             this.x++;

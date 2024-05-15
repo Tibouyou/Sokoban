@@ -5,9 +5,10 @@ import java.awt.event.KeyEvent;
 import java.util.Observer;
 import java.util.Observable;
 
+
 public class MF extends JFrame {
     private static final int L = 10;
-    private static final int H = 10;
+    private static final int H = 15;
     private JPanel[][] tabC = new JPanel[L][H];
     private Grid g;
 
@@ -58,22 +59,23 @@ public class MF extends JFrame {
     }
 
     public void update() {
-        for (int i = 0; i < L; i++) {
-            for (int j = 0; j < H; j++) {
-                tabC[i][j].setBackground(Color.WHITE);
-            }
-        }
-        for (int i = 0; i < L; i++) {
-            for (int j = 0; j < H; j++) {
+        for (int i = 0; i < H; i++) {
+            for (int j = 0; j < L; j++) {
                 if (g.getCase(i, j) instanceof Wall) {
                     tabC[g.getCase(i, j).getY()][g.getCase(i, j).getX()].setBackground(Color.BLACK);
                 } else if (g.getCase(i, j) instanceof Sensor) {
                     tabC[g.getCase(i, j).getY()][g.getCase(i, j).getX()].setBackground(Color.BLUE);
+                } else if (g.getCase(i, j) instanceof Air) {
+                    tabC[g.getCase(i, j).getY()][g.getCase(i, j).getX()].setBackground(Color.WHITE);
+                    String coords = g.getCase(i, j).getY() + " " + g.getCase(i, j).getX();
+                    JLabel jlabel = new JLabel(coords);
+                    jlabel.setFont(new Font("Verdana",1,20));
+                    tabC[g.getCase(i, j).getY()][g.getCase(i, j).getX()].add(jlabel);
                 }
             }
         }
-        for (int i = 0; i < L; i++) {
-            for (int j = 0; j < H; j++) {
+        for (int i = 0; i < H; i++) {
+            for (int j = 0; j < L; j++) {
                 if (g.getEntity(i, j) != null) {
                     if (g.getEntity(i, j) instanceof Box) {
                         tabC[g.getEntity(i, j).getY()][g.getEntity(i, j).getX()].setBackground(Color.GREEN);
