@@ -18,7 +18,7 @@ public class MF extends JFrame {
 
     private BufferedImage background = ImageIO.read(new File("data/background.png"));
     private BufferedImage wall;
-    private BufferedImage player;
+    private BufferedImage player = ImageIO.read(new File("data/player.png"));
     private BufferedImage box = ImageIO.read(new File("data/box.png"));
     private BufferedImage sensor;
 
@@ -28,17 +28,20 @@ public class MF extends JFrame {
         build();
         addEC();
     }
-    public void build() {
+
+    public void build() throws IOException {
         setTitle("Sokoban");
         setSize(H*70, L*70);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         JPanel jp = new JPanel(new BorderLayout());
         JPanel jpC = new JPanel(new GridLayout(L, H));
         JPanel jpInfo = new JPanel(new BorderLayout());
         jp.add(jpC, BorderLayout.CENTER);
         jp.add(jpInfo, BorderLayout.EAST);
         add(jp);
+
         for (int i = 0; i < L; i++) {
             for (int j = 0; j < H; j++) {
                 tabC[i][j] = new JPanel();
@@ -72,11 +75,6 @@ public class MF extends JFrame {
         requestFocus();
     }
 
-    public void paint(Graphics g, BufferedImage image, int x, int y) {
-        super.paint(g);
-        g.drawImage(image, x, y, this);
-    }
-
     public void update() {
         for (int i = 0; i < H; i++) {
             for (int j = 0; j < L; j++) {
@@ -105,9 +103,10 @@ public class MF extends JFrame {
                         setVisible(true);
                     }
                     else if (g.getEntity(i, j) instanceof Player) {
-                        System.out.println(g.getEntity(i, j).getX());
-                        System.out.println(g.getEntity(i, j).getY());
-                        tabC[g.getEntity(i, j).getY()][g.getEntity(i, j).getX()].setBackground(Color.RED);
+                        Image newPlayerSize = player.getScaledInstance(35, 55, Image.SCALE_SMOOTH);
+                        ImageIcon icon = new ImageIcon(newPlayerSize);
+                        tabC[g.getEntity(i, j).getY()][g.getEntity(i, j).getX()].add(new JLabel(icon));
+                        setVisible(true);
                     }
                 }
             }
