@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Player extends Entity{
     public Player() {
         super();
@@ -12,8 +14,11 @@ public class Player extends Entity{
                     if (g.getEntity(this.getX(), this.getY() - 1) == null || g.getEntity(this.getX(), this.getY() - 1).move(d, g)) {
                         if (!(g.getCase(this.getX(), this.getY() - 1) instanceof Wall)) {
                             this.y--;
+                            ArrayList<Integer> oldcoords = new ArrayList<Integer>();
+                            oldcoords.add(this.getX());
+                            oldcoords.add(this.getY() + 1);
                             setChanged();
-                            notifyObservers();
+                            notifyObservers(oldcoords);
                             return true;
                         }
                     }
@@ -24,8 +29,11 @@ public class Player extends Entity{
                     if (g.getEntity(this.getX(), this.getY() + 1) == null || g.getEntity(this.getX(), this.getY() + 1).move(d, g)) {
                         if (!(g.getCase(this.getX(), this.getY() + 1) instanceof Wall)) {
                             this.y++;
+                            ArrayList<Integer> oldcoords = new ArrayList<Integer>();
+                            oldcoords.add(this.getX());
+                            oldcoords.add(this.getY() - 1);
                             setChanged();
-                            notifyObservers();
+                            notifyObservers(oldcoords);
                             return true;
                         }
                     }
@@ -36,8 +44,11 @@ public class Player extends Entity{
                     if (g.getEntity(this.getX() - 1, this.getY()) == null || g.getEntity(this.getX() - 1, this.getY()).move(d, g)) {
                         if (!(g.getCase(this.getX() - 1, this.getY()) instanceof Wall)) {
                             this.x--;
+                            ArrayList<Integer> oldcoords = new ArrayList<Integer>();
+                            oldcoords.add(this.getX() + 1);
+                            oldcoords.add(this.getY());
                             setChanged();
-                            notifyObservers();
+                            notifyObservers(oldcoords);
                             return true;
                         }
                     }
@@ -48,8 +59,11 @@ public class Player extends Entity{
                     if (g.getEntity(this.getX() + 1, this.getY()) == null || g.getEntity(this.getX() + 1, this.getY()).move(d, g)) {
                         if (!(g.getCase(this.getX() + 1, this.getY()) instanceof Wall)) {
                             this.x++;
+                            ArrayList<Integer> oldcoords = new ArrayList<Integer>();
+                            oldcoords.add(this.getX() - 1);
+                            oldcoords.add(this.getY());
                             setChanged();
-                            notifyObservers();
+                            notifyObservers(oldcoords);
                             return true;
                         }
                     }

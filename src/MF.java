@@ -7,7 +7,7 @@ import java.util.Observable;
 
 
 public class MF extends JFrame {
-    private static final int L = 10;
+    private static final int L = 8;
     private static final int H = 15;
     private JPanel[][] tabC = new JPanel[L][H];
     private Grid g;
@@ -19,6 +19,8 @@ public class MF extends JFrame {
         addEC();
     }
     public void build() {
+        setTitle("Sokoban");
+        setSize(H*50, L*50);
         JPanel jp = new JPanel(new BorderLayout());
         JPanel jpC = new JPanel(new GridLayout(L, H));
         JPanel jpInfo = new JPanel(new BorderLayout());
@@ -81,6 +83,9 @@ public class MF extends JFrame {
                         tabC[g.getEntity(i, j).getY()][g.getEntity(i, j).getX()].setBackground(Color.GREEN);
                     }
                     else if (g.getEntity(i, j) instanceof Player) {
+                        System.out.println("Player");
+                        System.out.println(g.getEntity(i, j).getX());
+                        System.out.println(g.getEntity(i, j).getY());
                         tabC[g.getEntity(i, j).getY()][g.getEntity(i, j).getX()].setBackground(Color.RED);
                     }
                 }

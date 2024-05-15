@@ -1,31 +1,23 @@
-import java.util.Map;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
 public class Grid extends Observable implements Observer {
-    private Case[][] grid;
+    private Case[][] cases;
+    private int currentLevel = 1;
     private Entity[][] entities;
 
     private int width, height;
 
     private Player player = new Player();
 
-    public Grid(int width, int height) {
-        this.width = width;
-        this.height = height;
-        this.grid = new Case[width][height];
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                this.grid[i][j] = new Air(i, j);
-            }
-        }
-        this.entities = new Entity[width][height];
-        this.entities[3][3] = new Box(3, 3);
-        this.entities[4][4] = new Box(4, 4);
-        this.entities[0][0] = this.player;
-        this.grid[1][1] = new Sensor(1, 1);
-        this.grid[2][2] = new Sensor(2, 2);
-        this.grid[7][3] = new Wall(7, 3);
+    public Grid() {
+        loadLevel();
         player.addObserver(this);
     }
 
@@ -38,7 +30,7 @@ public class Grid extends Observable implements Observer {
     }
 
     public void addCase(Case c) {
-        this.grid[c.getX()][c.getY()] = c;
+        this.cases[c.getX()][c.getY()] = c;
     }
 
     public Entity getEntity(int x, int y) {
@@ -49,7 +41,7 @@ public class Grid extends Observable implements Observer {
         if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
             return null;
         }
-        return this.grid[x][y];
+        return this.cases[x][y];
     }
 
     public void movePlayer(Direction d) {
@@ -58,18 +50,13 @@ public class Grid extends Observable implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        Entity[][] newEntities = new Entity[this.width][this.height];
-        for (int i = 0; i < this.width; i++) {
-            for (int j = 0; j < this.height; j++) {
-                if (this.entities[i][j] != null) {
-                    int x = this.entities[i][j].getX();
-                    int y = this.entities[i][j].getY();
-                    newEntities[x][y] = this.entities[i][j];
-                }
-            }
+        int x = ((Entity) o).getX();
+        int y = ((Entity) o).getY();
+        this.entities[x][y] = (Entity) o;
+        if (arg != null) {
+            ArrayList<Integer> oldcoords = (ArrayList<Integer>) arg;
+            this.entities[oldcoords.get(0)][oldcoords.get(1)] = null;
         }
-        this.entities = newEntities;
-        System.out.println(this.isLevelWin());
         setChanged();
         notifyObservers();
     }
@@ -78,12 +65,67 @@ public class Grid extends Observable implements Observer {
         boolean isWin = true;
         for (int i = 0; i < this.width; i++) {
             for (int j = 0; j < this.height; j++) {
-                if (this.grid[i][j] instanceof Sensor) {
-                    isWin = isWin && ((Sensor) this.grid[i][j]).isActivated(this);
+                if (this.cases[i][j] instanceof Sensor) {
+                    isWin = isWin && ((Sensor) this.cases[i][j]).isActivated(this);
                 }
             }
         }
         return isWin;
+    }
+
+    public void loadLevel() {
+        try {
+            FileReader file = new FileReader("data/level" + this.currentLevel + ".txt");
+            BufferedReader reader = new BufferedReader(file);
+
+            String line = reader.readLine();
+            String[] size = line.split(" ");
+            this.width = Integer.parseInt(size[0]);
+            this.height = Integer.parseInt(size[1]);
+
+            this.cases = new Case[this.width][this.height];
+            this.entities = new Entity[this.width][this.height];
+            System.out.println(this.width + " " + this.height);
+            line = reader.readLine();
+
+            int compteur = 0;
+            while (line != null) {
+                String[] parts = line.split(" ");
+                System.out.println(Arrays.toString(parts));
+                for (int i = 0; i < parts.length - 1; i++) {
+                    switch (parts[i]) {
+                        case "#":
+                            this.cases[i][compteur] = new Wall(i, compteur);
+                            break;
+                        case "_":
+                            this.cases[i][compteur] = new Sensor(i, compteur);
+                            break;
+                        case "P":
+                            this.player = new Player(i, compteur);
+                            this.entities[i][compteur] = this.player;
+                            this.cases[i][compteur] = new Air(i, compteur);
+                            break;
+                        case "B":
+                            this.entities[i][compteur] = new Box(i, compteur);
+                            this.entities[i][compteur].addObserver(this);
+                            this.cases[i][compteur] = new Air(i, compteur);
+                            break;
+                        default:
+                            this.cases[i][compteur] = new Air(i, compteur);
+                            break;
+                    }
+                }
+                compteur++;
+                line = reader.readLine();
+            }
+            reader.close();
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        }
+        catch (IOException e) {
+            System.out.println("Error reading file");
+        }
     }
 
     public Player getPlayer() {
