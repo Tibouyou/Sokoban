@@ -85,14 +85,13 @@ public class Grid extends Observable implements Observer {
 
             this.cases = new Case[this.width][this.height];
             this.entities = new Entity[this.width][this.height];
-            System.out.println(this.width + " " + this.height);
             line = reader.readLine();
 
             int compteur = 0;
             while (line != null) {
                 String[] parts = line.split(" ");
                 System.out.println(Arrays.toString(parts));
-                for (int i = 0; i < parts.length - 1; i++) {
+                for (int i = 0; i < parts.length; i++) {
                     switch (parts[i]) {
                         case "#":
                             this.cases[i][compteur] = new Wall(i, compteur);
