@@ -18,7 +18,6 @@ public class Grid extends Observable implements Observer {
 
     public Grid() {
         loadLevel();
-        player.addObserver(this);
     }
 
     public int getWidth() {
@@ -56,6 +55,10 @@ public class Grid extends Observable implements Observer {
         if (arg != null) {
             ArrayList<Integer> oldcoords = (ArrayList<Integer>) arg;
             this.entities[oldcoords.get(0)][oldcoords.get(1)] = null;
+        }
+        if (isLevelWin() && o.getClass()==Player.class) {
+            this.currentLevel++;
+            loadLevel();
         }
         setChanged();
         notifyObservers();
@@ -102,6 +105,7 @@ public class Grid extends Observable implements Observer {
                         case "P":
                             this.player = new Player(i, compteur);
                             this.entities[i][compteur] = this.player;
+                            this.player.addObserver(this);
                             this.cases[i][compteur] = new Air(i, compteur);
                             break;
                         case "B":
