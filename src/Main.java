@@ -5,6 +5,5 @@ public class Main {
         Grid g = new Grid();
         MF mf = new MF(g);
         mf.setVisible(true);
-        mf.update();
     }
 }

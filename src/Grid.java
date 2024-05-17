@@ -122,6 +122,11 @@ public class Grid extends Observable implements Observer {
                 line = reader.readLine();
             }
             reader.close();
+            ArrayList<Integer> dimensions = new ArrayList<Integer>();
+            dimensions.add(this.width);
+            dimensions.add(this.height);
+            setChanged();
+            notifyObservers(dimensions);
         }
         catch (FileNotFoundException e) {
             System.out.println("File not found");

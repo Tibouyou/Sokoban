@@ -6,18 +6,18 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Observer;
 import java.util.Observable;
 
 
-public class MF extends JFrame {
-    private static final int L = 8;
-    private static final int H = 15;
-    private JPanel[][] tabC = new JPanel[L][H];
+public class MF extends JFrame implements Observer {
+    private int L = 8;
+    private int H = 15;
+    private JPanel[][] tabC;
     private Grid g;
-
     private BufferedImage background = ImageIO.read(new File("data/background.png"));
-    private BufferedImage wall;
+    private BufferedImage wall = ImageIO.read(new File("data/box.png"));
     private BufferedImage player = ImageIO.read(new File("data/player.png"));
     private BufferedImage box = ImageIO.read(new File("data/box.png"));
     private BufferedImage sensor;
@@ -25,15 +25,18 @@ public class MF extends JFrame {
 
     public MF(Grid g) throws IOException {
         this.g = g;
+        g.addObserver(this);
         build();
         addEC();
     }
 
+
     public void build() throws IOException {
         setTitle("Sokoban");
-        setSize(H*70, L*70);
+        setSize(H*100, L*100);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        tabC = new JPanel[L][H];
 
         JPanel jp = new JPanel(new BorderLayout());
         JPanel jpC = new JPanel(new GridLayout(L, H));
@@ -46,9 +49,11 @@ public class MF extends JFrame {
             for (int j = 0; j < H; j++) {
                 tabC[i][j] = new JPanel();
                 tabC[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                tabC[i][j].setBackground(Color.WHITE);
                 jpC.add(tabC[i][j]);
             }
         }
+        drawGame();
     }
 
     public void addEC() {
@@ -69,13 +74,12 @@ public class MF extends JFrame {
                         g.movePlayer(Direction.RIGHT);
                         break;
                 }
-                update();
             }
         });
         requestFocus();
     }
 
-    public void update() {
+    private void drawGame() {
         for (int i = 0; i < H; i++) {
             for (int j = 0; j < L; j++) {
                 if (g.getCase(i, j) instanceof Wall) {
@@ -97,13 +101,13 @@ public class MF extends JFrame {
                 tabC[j][i].updateUI();
                 if (g.getEntity(i, j) != null) {
                     if (g.getEntity(i, j) instanceof Box) {
-                        Image newBoxSize = box.getScaledInstance(55, 55, Image.SCALE_SMOOTH);
+                        Image newBoxSize = box.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
                         ImageIcon icon = new ImageIcon(newBoxSize);
                         tabC[g.getEntity(i, j).getY()][g.getEntity(i, j).getX()].add(new JLabel(icon));
                         setVisible(true);
                     }
                     else if (g.getEntity(i, j) instanceof Player) {
-                        Image newPlayerSize = player.getScaledInstance(35, 55, Image.SCALE_SMOOTH);
+                        Image newPlayerSize = player.getScaledInstance(50, 80, Image.SCALE_SMOOTH);
                         ImageIcon icon = new ImageIcon(newPlayerSize);
                         tabC[g.getEntity(i, j).getY()][g.getEntity(i, j).getX()].add(new JLabel(icon));
                         setVisible(true);
@@ -111,5 +115,18 @@ public class MF extends JFrame {
                 }
             }
         }
+    }
+
+    public void update(Observable o, Object arg) {
+        if (arg != null) {
+            this.L = ((ArrayList<Integer>) arg).get(1);
+            this.H = ((ArrayList<Integer>) arg).get(0);
+            try {
+                this.build();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        drawGame();
     }
 }
