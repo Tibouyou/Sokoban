@@ -10,8 +10,12 @@ import java.util.ArrayList;
 import java.util.Observer;
 import java.util.Observable;
 
+import static java.lang.Math.min;
+
 
 public class MF extends JFrame implements Observer {
+    private Menu menu = new Menu(this);
+    private int caseSize = 100;
     private int L = 8;
     private int H = 15;
     private JPanel[][] tabC;
@@ -27,27 +31,27 @@ public class MF extends JFrame implements Observer {
     public MF(Grid g) throws IOException {
         this.g = g;
         g.addObserver(this);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.caseSize = min(dim.height / L, dim.width / H);
+        System.out.println(dim);
+        System.out.println(caseSize);
         setTitle("Sokoban");
-        setSize(H*100, L*100);
+        setSize(caseSize*H, caseSize*L);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        SpinnerModel model = new SpinnerNumberModel(1, 1, 3, 1);
-        JSpinner spinner = new JSpinner(model);
-        Button button = new Button("Load level");
-        button.addActionListener(e -> {
-            g.setCurrentLevel((int) spinner.getValue());
-            g.loadLevel();
-        });
-        jp.add(spinner, BorderLayout.NORTH);
-        jp.add(button, BorderLayout.SOUTH);
         add(jp);
+        addEC();
     }
 
+    public void loadlevel(int level) {
+        g.setCurrentLevel(level);
+        g.loadLevel();
+        menu.setVisible(false);
+        setVisible(true);
+    }
 
     public void build() throws IOException {
-        setSize(H*100, L*100);
-        addEC();
-
+        setSize(caseSize*H, caseSize*L);
         tabC = new JPanel[L][H];
 
         jp.removeAll();
@@ -85,10 +89,16 @@ public class MF extends JFrame implements Observer {
                     case KeyEvent.VK_RIGHT:
                         g.movePlayer(Direction.RIGHT);
                         break;
+                    case KeyEvent.VK_R:
+                        g.loadLevel();
+                        break;
+                    case KeyEvent.VK_ESCAPE:
+                        menu.setVisible(true);
+                        setVisible(false);
+                        break;
                 }
             }
         });
-        requestFocus();
     }
 
     private void drawGame() {
@@ -113,13 +123,13 @@ public class MF extends JFrame implements Observer {
                 tabC[j][i].updateUI();
                 if (g.getEntity(i, j) != null) {
                     if (g.getEntity(i, j) instanceof Box) {
-                        Image newBoxSize = box.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
+                        Image newBoxSize = box.getScaledInstance((int) (caseSize*0.88), (int) (caseSize*0.88), Image.SCALE_SMOOTH);
                         ImageIcon icon = new ImageIcon(newBoxSize);
                         tabC[g.getEntity(i, j).getY()][g.getEntity(i, j).getX()].add(new JLabel(icon));
                         setVisible(true);
                     }
                     else if (g.getEntity(i, j) instanceof Player) {
-                        Image newPlayerSize = player.getScaledInstance(50, 80, Image.SCALE_SMOOTH);
+                        Image newPlayerSize = player.getScaledInstance((int) (caseSize*0.7), (int) (caseSize*0.88), Image.SCALE_SMOOTH);
                         ImageIcon icon = new ImageIcon(newPlayerSize);
                         tabC[g.getEntity(i, j).getY()][g.getEntity(i, j).getX()].add(new JLabel(icon));
                         setVisible(true);
@@ -133,6 +143,8 @@ public class MF extends JFrame implements Observer {
         if (arg != null) {
             this.L = ((ArrayList<Integer>) arg).get(1);
             this.H = ((ArrayList<Integer>) arg).get(0);
+            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+            this.caseSize = min(dim.height / L, dim.width / H);
             try {
                 this.build();
             } catch (IOException e) {
