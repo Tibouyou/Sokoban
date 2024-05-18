@@ -31,13 +31,22 @@ public class MF extends JFrame implements Observer {
         setSize(H*100, L*100);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        build();
-        addEC();
+        SpinnerModel model = new SpinnerNumberModel(1, 1, 3, 1);
+        JSpinner spinner = new JSpinner(model);
+        Button button = new Button("Load level");
+        button.addActionListener(e -> {
+            g.setCurrentLevel((int) spinner.getValue());
+            g.loadLevel();
+        });
+        jp.add(spinner, BorderLayout.NORTH);
+        jp.add(button, BorderLayout.SOUTH);
+        add(jp);
     }
 
 
     public void build() throws IOException {
         setSize(H*100, L*100);
+        addEC();
 
         tabC = new JPanel[L][H];
 
@@ -57,7 +66,6 @@ public class MF extends JFrame implements Observer {
                 jpC.add(tabC[i][j]);
             }
         }
-        drawGame();
     }
 
     public void addEC() {
