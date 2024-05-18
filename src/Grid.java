@@ -9,7 +9,7 @@ import java.util.Observer;
 
 public class Grid extends Observable implements Observer {
     private Case[][] cases;
-    private int currentLevel = 1;
+    private int currentLevel = 0;
     private Entity[][] entities;
 
     private int width, height;
