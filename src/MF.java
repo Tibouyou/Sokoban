@@ -16,6 +16,7 @@ public class MF extends JFrame implements Observer {
     private int H = 15;
     private JPanel[][] tabC;
     private Grid g;
+    JPanel jp = new JPanel(new BorderLayout());
     private BufferedImage background = ImageIO.read(new File("data/background.png"));
     private BufferedImage wall = ImageIO.read(new File("data/box.png"));
     private BufferedImage player = ImageIO.read(new File("data/player.png"));
@@ -26,19 +27,22 @@ public class MF extends JFrame implements Observer {
     public MF(Grid g) throws IOException {
         this.g = g;
         g.addObserver(this);
+        setTitle("Sokoban");
+        setSize(H*100, L*100);
+        setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         build();
         addEC();
     }
 
 
     public void build() throws IOException {
-        setTitle("Sokoban");
         setSize(H*100, L*100);
-        setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         tabC = new JPanel[L][H];
 
-        JPanel jp = new JPanel(new BorderLayout());
+        jp.removeAll();
+
         JPanel jpC = new JPanel(new GridLayout(L, H));
         JPanel jpInfo = new JPanel(new BorderLayout());
         jp.add(jpC, BorderLayout.CENTER);
