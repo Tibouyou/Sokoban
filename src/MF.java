@@ -22,7 +22,6 @@ public class MF extends JFrame implements Observer {
     private Grid g;
     JPanel jp = new JPanel(new BorderLayout());
     private BufferedImage background = ImageIO.read(new File("data/background.png"));
-    private BufferedImage wall = ImageIO.read(new File("data/box.png"));
     private BufferedImage player = ImageIO.read(new File("data/player.png"));
     private BufferedImage box = ImageIO.read(new File("data/box.png"));
     private BufferedImage sensor;
