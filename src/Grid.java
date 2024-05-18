@@ -20,6 +20,10 @@ public class Grid extends Observable implements Observer {
         loadLevel();
     }
 
+    public void setCurrentLevel(int currentLevel) {
+        this.currentLevel = currentLevel;
+    }
+
     public int getWidth() {
         return this.width;
     }
