@@ -31,9 +31,7 @@ public class MF extends JFrame implements Observer {
         this.g = g;
         g.addObserver(this);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.caseSize = min(dim.height / L, dim.width / H);
-        System.out.println(dim);
-        System.out.println(caseSize);
+        this.caseSize = (int) min(dim.height*0.9 / L, (double) dim.width / H);
         setTitle("Sokoban");
         setSize(caseSize*H, caseSize*L);
         setResizable(false);
@@ -143,7 +141,7 @@ public class MF extends JFrame implements Observer {
             this.L = ((ArrayList<Integer>) arg).get(1);
             this.H = ((ArrayList<Integer>) arg).get(0);
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-            this.caseSize = min(dim.height / L, dim.width / H);
+            this.caseSize = (int) min(dim.height*0.9 / L, (double) dim.width / H);
             try {
                 this.build();
             } catch (IOException e) {
