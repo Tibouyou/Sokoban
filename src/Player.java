@@ -1,3 +1,4 @@
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class Player extends Entity{
@@ -7,6 +8,7 @@ public class Player extends Entity{
     public Player(int x, int y) {
         super(x, y);
     }
+
     public boolean move(Direction d, Grid g) {
         switch (d) {
             case UP:
