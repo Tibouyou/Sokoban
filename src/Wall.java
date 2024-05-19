@@ -1,4 +1,4 @@
-public class Wall extends Case {
+public class Wall extends Cell {
     public Wall() {
         super();
     }

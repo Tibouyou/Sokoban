@@ -1,4 +1,4 @@
-public class Air extends Case{
+public class Air extends Cell {
     public Air() {
         super();
     }

@@ -1,13 +1,13 @@
 import java.util.Observable;
 
-public abstract class Case extends Observable {
+public abstract class Cell extends Observable {
     private int x;
     private int y;
-    public Case() {
+    public Cell() {
         this.x = 0;
         this.y = 0;
     }
-    public Case(int x, int y) {
+    public Cell(int x, int y) {
         this.x = x;
         this.y = y;
     }
