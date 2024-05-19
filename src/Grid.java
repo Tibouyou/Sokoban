@@ -52,6 +52,17 @@ public class Grid extends Observable implements Observer {
         int x = ((Entity) o).getX();
         int y = ((Entity) o).getY();
         this.entities[x][y] = (Entity) o;
+        if (o.getClass() == Box.class) {
+            if (cells[x][y] instanceof Trap) {
+                this.entities[x][y] = null;
+                this.cells[x][y] = new Air(x, y);
+            }
+        }
+        else if (o.getClass() == Player.class) {
+            if (cells[x][y] instanceof Trap) {
+                loadLevel();
+            }
+        }
         if (arg != null) {
             ArrayList<Integer> oldcoords = (ArrayList<Integer>) arg;
             this.entities[oldcoords.get(0)][oldcoords.get(1)] = null;
@@ -101,6 +112,9 @@ public class Grid extends Observable implements Observer {
                             break;
                         case "_":
                             this.cells[i][compteur] = new Sensor(i, compteur);
+                            break;
+                        case "X":
+                            this.cells[i][compteur] = new Trap(i, compteur);
                             break;
                         case "P":
                             this.player = new Player(i, compteur);

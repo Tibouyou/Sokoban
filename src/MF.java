@@ -23,10 +23,10 @@ public class MF extends JFrame implements Observer {
     private JPanel[][] tabC;
     private Grid g;
     JPanel jp = new JPanel(new BorderLayout());
-    private BufferedImage background = ImageIO.read(new File("data/background.png"));
     private BufferedImage player = ImageIO.read(new File("data/player0.png"));
     private BufferedImage box = ImageIO.read(new File("data/box.png"));
     private BufferedImage sensor = ImageIO.read(new File("data/sensor.png"));
+    private BufferedImage trap = ImageIO.read(new File("data/trap.png"));
 
 
     public MF(Grid g) throws IOException {
@@ -128,6 +128,11 @@ public class MF extends JFrame implements Observer {
                 } else if (g.getCell(i, j) instanceof Sensor) {
                     Image newSensorSize = sensor.getScaledInstance((int) (cellSize *0.75), (int) (cellSize *0.75), Image.SCALE_SMOOTH);
                     ImageIcon icon = new ImageIcon(newSensorSize);
+                    tabC[g.getCell(i, j).getY()][g.getCell(i, j).getX()].add(new JLabel(icon));
+                    setVisible(true);
+                } else if (g.getCell(i, j) instanceof Trap) {
+                    Image newTrapSize = trap.getScaledInstance((int) (cellSize *0.75), (int) (cellSize *0.75), Image.SCALE_SMOOTH);
+                    ImageIcon icon = new ImageIcon(newTrapSize);
                     tabC[g.getCell(i, j).getY()][g.getCell(i, j).getX()].add(new JLabel(icon));
                     setVisible(true);
                 } else if (g.getCell(i, j) instanceof Air) {
