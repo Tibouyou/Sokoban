@@ -22,7 +22,7 @@ public class MF extends JFrame implements Observer {
     private Grid g;
     JPanel jp = new JPanel(new BorderLayout());
     private BufferedImage background = ImageIO.read(new File("data/background.png"));
-    private BufferedImage player = ImageIO.read(new File("data/player.png"));
+    private BufferedImage player = ImageIO.read(new File("data/player0.png"));
     private BufferedImage box = ImageIO.read(new File("data/box.png"));
     private BufferedImage sensor;
 
@@ -151,5 +151,9 @@ public class MF extends JFrame implements Observer {
             }
         }
         drawGame();
+    }
+
+    public void selectPlayer(int value) throws IOException {
+        this.player = ImageIO.read(new File("data/player"+value+".png"));
     }
 }
