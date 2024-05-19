@@ -15,7 +15,7 @@ import static java.lang.Math.min;
 
 public class MF extends JFrame implements Observer {
     private Menu menu = new Menu(this);
-    private int caseSize = 100;
+    private int cellSize = 100;
     private int L = 8;
     private int H = 15;
     private JPanel[][] tabC;
@@ -24,16 +24,16 @@ public class MF extends JFrame implements Observer {
     private BufferedImage background = ImageIO.read(new File("data/background.png"));
     private BufferedImage player = ImageIO.read(new File("data/player0.png"));
     private BufferedImage box = ImageIO.read(new File("data/box.png"));
-    private BufferedImage sensor;
+    private BufferedImage sensor = ImageIO.read(new File("data/sensor.png"));
 
 
     public MF(Grid g) throws IOException {
         this.g = g;
         g.addObserver(this);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.caseSize = (int) min(dim.height*0.9 / L, (double) dim.width / H);
+        this.cellSize = (int) min(dim.height*0.9 / L, (double) dim.width / H);
         setTitle("Sokoban");
-        setSize(caseSize*H, caseSize*L);
+        setSize(cellSize * H, cellSize * L);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(jp);
@@ -48,7 +48,7 @@ public class MF extends JFrame implements Observer {
     }
 
     public void build() throws IOException {
-        setSize(caseSize*H, caseSize*L);
+        setSize(cellSize *H, cellSize *L);
         tabC = new JPanel[L][H];
 
         jp.removeAll();
@@ -62,7 +62,6 @@ public class MF extends JFrame implements Observer {
         for (int i = 0; i < L; i++) {
             for (int j = 0; j < H; j++) {
                 tabC[i][j] = new JPanel();
-                tabC[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 tabC[i][j].setBackground(Color.WHITE);
                 jpC.add(tabC[i][j]);
             }
@@ -101,36 +100,36 @@ public class MF extends JFrame implements Observer {
     private void drawGame() {
         for (int i = 0; i < H; i++) {
             for (int j = 0; j < L; j++) {
-                if (g.getCase(i, j) instanceof Wall) {
-                    tabC[g.getCase(i, j).getY()][g.getCase(i, j).getX()].setBackground(Color.BLACK);
-                } else if (g.getCase(i, j) instanceof Sensor) {
-                    tabC[g.getCase(i, j).getY()][g.getCase(i, j).getX()].setBackground(Color.BLUE);
-                } else if (g.getCase(i, j) instanceof Air) {
-                    tabC[g.getCase(i, j).getY()][g.getCase(i, j).getX()].setBackground(Color.WHITE);
-                    /*String coords = g.getCase(i, j).getY() + " " + g.getCase(i, j).getX();
-                    JLabel jlabel = new JLabel(coords);
-                    jlabel.setFont(new Font("Verdana",1,20));
-                    tabC[g.getCase(i, j).getY()][g.getCase(i, j).getX()].add(jlabel);*/
-                }
-            }
-        }
-        for (int i = 0; i < H; i++) {
-            for (int j = 0; j < L; j++) {
                 tabC[j][i].removeAll();
                 tabC[j][i].updateUI();
                 if (g.getEntity(i, j) != null) {
                     if (g.getEntity(i, j) instanceof Box) {
-                        Image newBoxSize = box.getScaledInstance((int) (caseSize*0.88), (int) (caseSize*0.88), Image.SCALE_SMOOTH);
+                        Image newBoxSize = box.getScaledInstance((int) (cellSize *0.88), (int) (cellSize *0.88), Image.SCALE_SMOOTH);
                         ImageIcon icon = new ImageIcon(newBoxSize);
                         tabC[g.getEntity(i, j).getY()][g.getEntity(i, j).getX()].add(new JLabel(icon));
                         setVisible(true);
                     }
                     else if (g.getEntity(i, j) instanceof Player) {
-                        Image newPlayerSize = player.getScaledInstance((int) (caseSize*0.7), (int) (caseSize*0.88), Image.SCALE_SMOOTH);
+                        Image newPlayerSize = player.getScaledInstance((int) (cellSize *0.7), (int) (cellSize *0.88), Image.SCALE_SMOOTH);
                         ImageIcon icon = new ImageIcon(newPlayerSize);
                         tabC[g.getEntity(i, j).getY()][g.getEntity(i, j).getX()].add(new JLabel(icon));
                         setVisible(true);
                     }
+                }
+            }
+        }
+
+        for (int i = 0; i < H; i++) {
+            for (int j = 0; j < L; j++) {
+                if (g.getCell(i, j) instanceof Wall) {
+                    tabC[g.getCell(i, j).getY()][g.getCell(i, j).getX()].setBackground(Color.BLACK);
+                } else if (g.getCell(i, j) instanceof Sensor) {
+                    Image newSensorSize = sensor.getScaledInstance((int) (cellSize *0.75), (int) (cellSize *0.75), Image.SCALE_SMOOTH);
+                    ImageIcon icon = new ImageIcon(newSensorSize);
+                    tabC[g.getCell(i, j).getY()][g.getCell(i, j).getX()].add(new JLabel(icon));
+                    setVisible(true);
+                } else if (g.getCell(i, j) instanceof Air) {
+                    tabC[g.getCell(i, j).getY()][g.getCell(i, j).getX()].setBackground(Color.WHITE);
                 }
             }
         }
@@ -141,7 +140,7 @@ public class MF extends JFrame implements Observer {
             this.L = ((ArrayList<Integer>) arg).get(1);
             this.H = ((ArrayList<Integer>) arg).get(0);
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-            this.caseSize = (int) min(dim.height*0.9 / L, (double) dim.width / H);
+            this.cellSize = (int) min(dim.height*0.9 / L, (double) dim.width / H);
             try {
                 this.build();
             } catch (IOException e) {

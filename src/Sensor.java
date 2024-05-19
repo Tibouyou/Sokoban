@@ -1,4 +1,4 @@
-public class Sensor extends Case{
+public class Sensor extends Cell {
     public Sensor() {
         super();
     }

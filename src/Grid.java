@@ -8,7 +8,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class Grid extends Observable implements Observer {
-    private Case[][] cases;
+    private Cell[][] cells;
     private int currentLevel = 0;
     private Entity[][] entities;
 
@@ -32,19 +32,15 @@ public class Grid extends Observable implements Observer {
         return this.height;
     }
 
-    public void addCase(Case c) {
-        this.cases[c.getX()][c.getY()] = c;
-    }
-
     public Entity getEntity(int x, int y) {
         return this.entities[x][y];
     }
 
-    public Case getCase(int x,int y) {
+    public Cell getCell(int x, int y) {
         if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
             return null;
         }
-        return this.cases[x][y];
+        return this.cells[x][y];
     }
 
     public void movePlayer(Direction d) {
@@ -72,8 +68,8 @@ public class Grid extends Observable implements Observer {
         boolean isWin = true;
         for (int i = 0; i < this.width; i++) {
             for (int j = 0; j < this.height; j++) {
-                if (this.cases[i][j] instanceof Sensor) {
-                    isWin = isWin && ((Sensor) this.cases[i][j]).isActivated(this);
+                if (this.cells[i][j] instanceof Sensor) {
+                    isWin = isWin && ((Sensor) this.cells[i][j]).isActivated(this);
                 }
             }
         }
@@ -90,7 +86,7 @@ public class Grid extends Observable implements Observer {
             this.width = Integer.parseInt(size[0]);
             this.height = Integer.parseInt(size[1]);
 
-            this.cases = new Case[this.width][this.height];
+            this.cells = new Cell[this.width][this.height];
             this.entities = new Entity[this.width][this.height];
             line = reader.readLine();
 
@@ -101,24 +97,24 @@ public class Grid extends Observable implements Observer {
                 for (int i = 0; i < parts.length; i++) {
                     switch (parts[i]) {
                         case "#":
-                            this.cases[i][compteur] = new Wall(i, compteur);
+                            this.cells[i][compteur] = new Wall(i, compteur);
                             break;
                         case "_":
-                            this.cases[i][compteur] = new Sensor(i, compteur);
+                            this.cells[i][compteur] = new Sensor(i, compteur);
                             break;
                         case "P":
                             this.player = new Player(i, compteur);
                             this.entities[i][compteur] = this.player;
                             this.player.addObserver(this);
-                            this.cases[i][compteur] = new Air(i, compteur);
+                            this.cells[i][compteur] = new Air(i, compteur);
                             break;
                         case "B":
                             this.entities[i][compteur] = new Box(i, compteur);
                             this.entities[i][compteur].addObserver(this);
-                            this.cases[i][compteur] = new Air(i, compteur);
+                            this.cells[i][compteur] = new Air(i, compteur);
                             break;
                         default:
-                            this.cases[i][compteur] = new Air(i, compteur);
+                            this.cells[i][compteur] = new Air(i, compteur);
                             break;
                     }
                 }

@@ -12,7 +12,7 @@ public class Box extends Entity{
             case UP:
                 if (this.getY() > 0) {
                     if (g.getEntity(this.getX(), this.getY() - 1) == null) {
-                        if (!(g.getCase(this.getX(), this.getY() - 1) instanceof Wall)) {
+                        if (!(g.getCell(this.getX(), this.getY() - 1) instanceof Wall)) {
                             this.y--;
                             ArrayList<Integer> oldcoords = new ArrayList<Integer>();
                             oldcoords.add(this.getX());
@@ -27,7 +27,7 @@ public class Box extends Entity{
             case DOWN:
                 if (this.getY() < g.getHeight()-1) {
                     if (g.getEntity(this.getX(), this.getY() + 1) == null) {
-                        if (!(g.getCase(this.getX(), this.getY() + 1) instanceof Wall)) {
+                        if (!(g.getCell(this.getX(), this.getY() + 1) instanceof Wall)) {
                             this.y++;
                             ArrayList<Integer> oldcoords = new ArrayList<Integer>();
                             oldcoords.add(this.getX());
@@ -42,7 +42,7 @@ public class Box extends Entity{
             case LEFT:
                 if (this.getX() > 0) {
                     if (g.getEntity(this.getX() - 1, this.getY()) == null) {
-                        if (!(g.getCase(this.getX() - 1, this.getY()) instanceof Wall)) {
+                        if (!(g.getCell(this.getX() - 1, this.getY()) instanceof Wall)) {
                             this.x--;
                             ArrayList<Integer> oldcoords = new ArrayList<Integer>();
                             oldcoords.add(this.getX() + 1);
@@ -57,7 +57,7 @@ public class Box extends Entity{
             case RIGHT:
                 if (this.getX() < g.getWidth()-1) {
                     if (g.getEntity(this.getX() + 1, this.getY()) == null) {
-                        if (!(g.getCase(this.getX() + 1, this.getY()) instanceof Wall)) {
+                        if (!(g.getCell(this.getX() + 1, this.getY()) instanceof Wall)) {
                             this.x++;
                             ArrayList<Integer> oldcoords = new ArrayList<Integer>();
                             oldcoords.add(this.getX() - 1);
