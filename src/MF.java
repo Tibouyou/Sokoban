@@ -33,11 +33,9 @@ public class MF extends JFrame implements Observer {
         this.g = g;
         g.addObserver(this);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.cellSize = min(dim.height / L, dim.width / H);
-        System.out.println(dim);
-        System.out.println(cellSize);
+        this.cellSize = (int) min(dim.height*0.9 / L, (double) dim.width / H);
         setTitle("Sokoban");
-        setSize(cellSize *H, cellSize *L);
+        setSize(cellSize * H, cellSize * L);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(jp);
@@ -144,7 +142,7 @@ public class MF extends JFrame implements Observer {
             this.L = ((ArrayList<Integer>) arg).get(1);
             this.H = ((ArrayList<Integer>) arg).get(0);
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-            this.cellSize = min(dim.height / L, dim.width / H);
+            this.cellSize = (int) min(dim.height*0.9 / L, (double) dim.width / H);
             try {
                 this.build();
             } catch (IOException e) {
