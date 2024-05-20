@@ -106,7 +106,7 @@ public class MF extends JFrame implements Observer {
                         setVisible(true);
                     }
                     else if (g.getEntity(i, j) instanceof Player) {
-                        Image newPlayerSize = player.getScaledInstance((int) (cellSize *0.7), (int) (cellSize *0.88), Image.SCALE_SMOOTH);
+                        Image newPlayerSize = player.getScaledInstance((int) (cellSize *0.5), (int) (cellSize *0.88), Image.SCALE_SMOOTH);
                         ImageIcon icon = new ImageIcon(newPlayerSize);
                         tabC[g.getEntity(i, j).getY()][g.getEntity(i, j).getX()].add(new JLabel(icon));
                         setVisible(true);
@@ -185,7 +185,7 @@ public class MF extends JFrame implements Observer {
             tabC[e.getY()][e.getX()].add(new JLabel(icon));
             setVisible(true);
         } else if (e instanceof Player) {
-            Image newPlayerSize = player.getScaledInstance((int) (cellSize *0.7), (int) (cellSize *0.88), Image.SCALE_SMOOTH);
+            Image newPlayerSize = player.getScaledInstance((int) (cellSize *0.5), (int) (cellSize *0.88), Image.SCALE_SMOOTH);
             ImageIcon icon = new ImageIcon(newPlayerSize);
             tabC[e.getY()][e.getX()].add(new JLabel(icon));
             setVisible(true);
