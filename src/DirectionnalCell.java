@@ -1,8 +1,6 @@
 public class DirectionnalCell extends Cell {
     private Direction direction;
-    public DirectionnalCell() {
-        super();
-    }
+
     public DirectionnalCell(int x, int y, Direction d) {
         super(x, y);
         this.direction = d;

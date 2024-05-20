@@ -15,21 +15,20 @@ import static java.lang.Math.min;
 
 public class MF extends JFrame implements Observer {
     private Menu menu = new Menu(this);
-    private int cellSize = 100;
-    private int L = 8;
-    private int H = 15;
+    private int cellSize;
+    private int W;
+    private int H;
     private JPanel[][] tabC;
     private Grid g;
     JPanel jp = new JPanel(new BorderLayout());
-    private BufferedImage player = ImageIO.read(new File("data/player0.png"));
-    private BufferedImage box = ImageIO.read(new File("data/box.png"));
-    private BufferedImage sensor = ImageIO.read(new File("data/sensor.png"));
-    private BufferedImage trap = ImageIO.read(new File("data/trap.png"));
+    private BufferedImage player;
+    private BufferedImage box = ImageIO.read(new File("data/assets/box.png"));
+    private BufferedImage sensor = ImageIO.read(new File("data/assets/sensor.png"));
+    private BufferedImage trap = ImageIO.read(new File("data/assets/trap.png"));
     private BufferedImage[] conveyors = new BufferedImage[4];
-
     {
         for (int i = 0; i < 4; i++) {
-            conveyors[i] = ImageIO.read(new File("data/conveyor"+i+".png"));
+            conveyors[i] = ImageIO.read(new File("data/assets/conveyor"+i+".png"));
         }
     }
 
@@ -38,9 +37,9 @@ public class MF extends JFrame implements Observer {
         this.g = g;
         g.addObserver(this);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.cellSize = (int) min(dim.height*0.9 / L, (double) dim.width / H);
+        this.cellSize = (int) min(dim.height*0.9 / W, (double) dim.width / H);
         setTitle("Sokoban");
-        setSize(cellSize * H, cellSize * L);
+        setSize(cellSize * H, cellSize * W);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(jp);
@@ -55,18 +54,18 @@ public class MF extends JFrame implements Observer {
     }
 
     public void build() throws IOException {
-        setSize(cellSize *H, cellSize *L);
-        tabC = new JPanel[L][H];
+        setSize(cellSize *H, cellSize * W);
+        tabC = new JPanel[W][H];
 
         jp.removeAll();
 
-        JPanel jpC = new JPanel(new GridLayout(L, H));
+        JPanel jpC = new JPanel(new GridLayout(W, H));
         JPanel jpInfo = new JPanel(new BorderLayout());
         jp.add(jpC, BorderLayout.CENTER);
         jp.add(jpInfo, BorderLayout.EAST);
         add(jp);
 
-        for (int i = 0; i < L; i++) {
+        for (int i = 0; i < W; i++) {
             for (int j = 0; j < H; j++) {
                 tabC[i][j] = new JPanel();
                 tabC[i][j].setBackground(Color.WHITE);
@@ -74,7 +73,7 @@ public class MF extends JFrame implements Observer {
             }
         }
         for (int i = 0; i < H; i++) {
-            for (int j = 0; j < L; j++) {
+            for (int j = 0; j < W; j++) {
                 if (g.getCell(i, j) instanceof Wall) {
                     tabC[g.getCell(i, j).getY()][g.getCell(i, j).getX()].setBackground(Color.BLACK);
                 } else if (g.getCell(i, j) instanceof Sensor) {
@@ -97,9 +96,8 @@ public class MF extends JFrame implements Observer {
                 }
             }
         }
-
         for (int i = 0; i < H; i++) {
-            for (int j = 0; j < L; j++) {
+            for (int j = 0; j < W; j++) {
                 if (g.getEntity(i, j) != null) {
                     if (g.getEntity(i, j) instanceof Box) {
                         Image newBoxSize = box.getScaledInstance((int) (cellSize *0.88), (int) (cellSize *0.88), Image.SCALE_SMOOTH);
@@ -117,7 +115,6 @@ public class MF extends JFrame implements Observer {
             }
         }
     }
-
     public void addEC() {
         addKeyListener(new KeyAdapter() {
             @Override
@@ -147,13 +144,13 @@ public class MF extends JFrame implements Observer {
         });
     }
 
-    private void drawEntity(int i, int j, int x, int y) {
-        Entity e = g.getEntity(i, j);
+    private void drawEntity(int newX, int newY, int x, int y) {
+        Entity e = g.getEntity(newX, newY);
         tabC[y][x].removeAll();
         tabC[y][x].updateUI();
         if (e == null) {
-            tabC[j][i].removeAll();
-            tabC[j][i].updateUI();
+            tabC[newY][newX].removeAll();
+            tabC[newY][newX].updateUI();
             return;
         }
         if (g.getCell(x,y) != null) {
@@ -197,17 +194,20 @@ public class MF extends JFrame implements Observer {
 
     public void update(Observable o, Object arg) {
         if (arg != null) {
+            // If the argument is a boolean, it means that a level as been loaded
             if (arg instanceof Boolean) {
-                this.L = g.getHeight();
+                this.W = g.getHeight();
                 this.H = g.getWidth();
                 Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-                this.cellSize = (int) min(dim.height*0.9 / L, (double) dim.width / H);
+                this.cellSize = (int) min(dim.height*0.9 / W, (double) dim.width / H);
                 try {
                     this.build();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-            } else {
+            }
+            // If the argument is an ArrayList, it means that a box or the player has moved
+            else {
                 ArrayList<Integer> coords = (ArrayList<Integer>) arg;
                 drawEntity(coords.get(0), coords.get(1), coords.get(2), coords.get(3));
             }
@@ -215,6 +215,6 @@ public class MF extends JFrame implements Observer {
     }
 
     public void selectPlayer(int value) throws IOException {
-        this.player = ImageIO.read(new File("data/player"+value+".png"));
+        this.player = ImageIO.read(new File("data/assets/player"+value+".png"));
     }
 }

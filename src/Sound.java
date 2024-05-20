@@ -7,7 +7,7 @@ import java.io.*;
 class Sound {
     void playMusic(){
         try {
-            File musicPath = new File("data/music.wav");
+            File musicPath = new File("data/musics/music.wav");
             if(musicPath.exists()){
                 AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
                 Clip clip = AudioSystem.getClip();

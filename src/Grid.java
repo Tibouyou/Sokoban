@@ -8,74 +8,69 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class Grid extends Observable implements Observer {
-    private Cell[][] cells;
     private int currentLevel = 0;
+    private Cell[][] cells;
     private Entity[][] entities;
-
     private int width, height;
-
     private Player player = new Player();
-
     public Grid() {
         loadLevel();
     }
-
     public void setCurrentLevel(int currentLevel) {
         this.currentLevel = currentLevel;
     }
-
     public int getWidth() {
         return this.width;
     }
-
     public int getHeight() {
         return this.height;
     }
-
     public Entity getEntity(int x, int y) {
+        if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
+            return null;
+        }
         return this.entities[x][y];
     }
-
     public Cell getCell(int x, int y) {
         if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
             return null;
         }
         return this.cells[x][y];
     }
-
     public void movePlayer(Direction d) {
         this.player.move(d, this);
     }
-
     @Override
     public void update(Observable o, Object arg) {
         int x = ((Entity) o).getX();
         int y = ((Entity) o).getY();
         this.entities[x][y] = (Entity) o;
+        // If the entity is a box and is on a trap, remove the box and the trap
         if (o.getClass() == Box.class) {
             if (cells[x][y] instanceof Trap) {
                 this.entities[x][y] = null;
                 this.cells[x][y] = new Air(x, y);
             }
         }
+        // If the entity is a player and is on a trap, reload the level
         else if (o.getClass() == Player.class) {
             if (cells[x][y] instanceof Trap) {
                 loadLevel();
+                return;
             }
-        }
-        if (arg != null) {
-            ArrayList<Integer> oldcoords = (ArrayList<Integer>) arg;
-            this.entities[oldcoords.get(0)][oldcoords.get(1)] = null;
         }
         if (isLevelWin() && o.getClass()==Player.class) {
             this.currentLevel++;
             loadLevel();
+            return;
         }
+        ArrayList<Integer> oldcoords = (ArrayList<Integer>) arg;
+        this.entities[oldcoords.get(0)][oldcoords.get(1)] = null;
         ArrayList<Integer> coords = new ArrayList<Integer>();
         coords.add(x);
         coords.add(y);
-        coords.add(arg == null ? x : ((ArrayList<Integer>) arg).get(0));
-        coords.add(arg == null ? y : ((ArrayList<Integer>) arg).get(1));
+        coords.add(oldcoords.get(0));
+        coords.add(oldcoords.get(1));
         setChanged();
         notifyObservers(coords);
     }
@@ -94,7 +89,7 @@ public class Grid extends Observable implements Observer {
 
     public void loadLevel() {
         try {
-            FileReader file = new FileReader("data/level" + this.currentLevel + ".txt");
+            FileReader file = new FileReader("data/levels/level" + this.currentLevel + ".txt");
             BufferedReader reader = new BufferedReader(file);
 
             String line = reader.readLine();
@@ -109,7 +104,6 @@ public class Grid extends Observable implements Observer {
             int compteur = 0;
             while (line != null) {
                 String[] parts = line.split(" ");
-                System.out.println(Arrays.toString(parts));
                 for (int i = 0; i < parts.length; i++) {
                     switch (parts[i]) {
                         case "#":
@@ -162,9 +156,5 @@ public class Grid extends Observable implements Observer {
         catch (IOException e) {
             System.out.println("Error reading file");
         }
-    }
-
-    public Player getPlayer() {
-        return this.player;
     }
 }
