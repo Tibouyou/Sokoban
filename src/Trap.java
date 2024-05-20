@@ -5,7 +5,9 @@ public class Trap extends Cell{
     public Trap(int x, int y) {
         super(x, y);
     }
-    public boolean getType() {
-        return true;
+
+    @Override
+    public boolean isSolid(Direction d) {
+        return false;
     }
 }

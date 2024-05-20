@@ -6,7 +6,8 @@ public class Wall extends Cell {
         super(x, y);
     }
 
-    public boolean getType() {
-        return false;
+    @Override
+    public boolean isSolid(Direction d) {
+        return true;
     }
 }

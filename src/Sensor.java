@@ -5,8 +5,10 @@ public class Sensor extends Cell {
     public Sensor(int x, int y) {
         super(x, y);
     }
-    public boolean getType() {
-        return true;
+
+    @Override
+    public boolean isSolid(Direction d) {
+        return false;
     }
 
     public boolean isActivated(Grid g) {

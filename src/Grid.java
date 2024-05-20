@@ -71,8 +71,13 @@ public class Grid extends Observable implements Observer {
             this.currentLevel++;
             loadLevel();
         }
+        ArrayList<Integer> coords = new ArrayList<Integer>();
+        coords.add(x);
+        coords.add(y);
+        coords.add(arg == null ? x : ((ArrayList<Integer>) arg).get(0));
+        coords.add(arg == null ? y : ((ArrayList<Integer>) arg).get(1));
         setChanged();
-        notifyObservers();
+        notifyObservers(coords);
     }
 
     public boolean isLevelWin() {
@@ -127,6 +132,18 @@ public class Grid extends Observable implements Observer {
                             this.entities[i][compteur].addObserver(this);
                             this.cells[i][compteur] = new Air(i, compteur);
                             break;
+                        case "↑":
+                            this.cells[i][compteur] = new DirectionnalCell(i, compteur, Direction.UP);
+                            break;
+                        case "↓":
+                            this.cells[i][compteur] = new DirectionnalCell(i, compteur, Direction.DOWN);
+                            break;
+                        case "←":
+                            this.cells[i][compteur] = new DirectionnalCell(i, compteur, Direction.LEFT);
+                            break;
+                        case "→":
+                            this.cells[i][compteur] = new DirectionnalCell(i, compteur, Direction.RIGHT);
+                            break;
                         default:
                             this.cells[i][compteur] = new Air(i, compteur);
                             break;
@@ -136,11 +153,8 @@ public class Grid extends Observable implements Observer {
                 line = reader.readLine();
             }
             reader.close();
-            ArrayList<Integer> dimensions = new ArrayList<Integer>();
-            dimensions.add(this.width);
-            dimensions.add(this.height);
             setChanged();
-            notifyObservers(dimensions);
+            notifyObservers(true);
         }
         catch (FileNotFoundException e) {
             System.out.println("File not found");
