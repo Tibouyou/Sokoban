@@ -1,3 +1,7 @@
+package Cell;
+
+import Enum.Direction;
+
 public class DirectionnalCell extends Cell {
     private Direction direction;
 

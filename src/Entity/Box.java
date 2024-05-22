@@ -1,3 +1,9 @@
+package Entity;
+
+import Enum.Direction;
+import Model.Grid;
+import Cell.DirectionnalCell;
+
 import java.util.ArrayList;
 
 public class Box extends Entity{
@@ -7,6 +13,7 @@ public class Box extends Entity{
     public Box(int x, int y) {
         super(x, y);
     }
+
     public boolean move(Direction d, Grid g) {
         switch (d) {
             case UP:

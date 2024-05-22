@@ -1,9 +1,14 @@
+package Model;
+
+import Cell.*;
+import Entity.*;
+import Enum.Direction;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -59,7 +64,7 @@ public class Grid extends Observable implements Observer {
                 return;
             }
         }
-        if (isLevelWin() && o.getClass()==Player.class) {
+        if (isLevelWin() && o.getClass()== Player.class) {
             this.currentLevel++;
             loadLevel();
             return;

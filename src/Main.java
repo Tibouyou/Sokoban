@@ -1,3 +1,6 @@
+import Model.Grid;
+import Vue.MF;
+
 import java.io.IOException;
 
 public class Main {

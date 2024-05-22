@@ -1,4 +1,9 @@
-import java.io.InputStream;
+package Entity;
+
+import Enum.Direction;
+import Model.Grid;
+import Cell.DirectionnalCell;
+
 import java.util.ArrayList;
 
 public class Player extends Entity{

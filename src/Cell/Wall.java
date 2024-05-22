@@ -1,3 +1,6 @@
+package Cell;
+
+import Enum.Direction;
 public class Wall extends Cell {
     public Wall() {
         super();

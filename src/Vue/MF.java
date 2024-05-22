@@ -1,3 +1,11 @@
+package Vue;
+
+import Cell.*;
+import Entity.*;
+import Entity.Box;
+import Model.Grid;
+import Enum.Direction;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;

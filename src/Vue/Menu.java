@@ -1,8 +1,9 @@
+package Vue;
+
+import Vue.MF;
+
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.Observable;
 
 public class Menu extends JFrame {
     private JPanel panel1;

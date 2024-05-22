@@ -1,8 +1,12 @@
-public class Air extends Cell {
-    public Air() {
+package Cell;
+
+import Enum.Direction;
+
+public class Trap extends Cell{
+    public Trap() {
         super();
     }
-    public Air(int x, int y) {
+    public Trap(int x, int y) {
         super(x, y);
     }
 

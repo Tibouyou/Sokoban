@@ -1,3 +1,9 @@
+package Cell;
+
+import Model.Grid;
+import Enum.Direction;
+import Entity.Box;
+
 public class Sensor extends Cell {
     public Sensor() {
         super();
