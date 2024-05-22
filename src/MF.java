@@ -25,10 +25,10 @@ public class MF extends JFrame implements Observer {
     private BufferedImage box = ImageIO.read(new File("data/assets/box.png"));
     private BufferedImage sensor = ImageIO.read(new File("data/assets/sensor.png"));
     private BufferedImage trap = ImageIO.read(new File("data/assets/trap.png"));
-    private BufferedImage[] conveyors = new BufferedImage[4];
+    private BufferedImage[] directionnal = new BufferedImage[4];
     {
         for (int i = 0; i < 4; i++) {
-            conveyors[i] = ImageIO.read(new File("data/assets/conveyor"+i+".png"));
+            directionnal[i] = ImageIO.read(new File("data/assets/directionnal"+i+".png"));
         }
     }
 
@@ -38,7 +38,7 @@ public class MF extends JFrame implements Observer {
         g.addObserver(this);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.cellSize = (int) min(dim.height*0.9 / W, (double) dim.width / H);
-        setTitle("Sokoban");
+        setTitle("SokIOban");
         setSize(cellSize * H, cellSize * W);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -89,7 +89,7 @@ public class MF extends JFrame implements Observer {
                 } else if (g.getCell(i, j) instanceof Air) {
                     tabC[g.getCell(i, j).getY()][g.getCell(i, j).getX()].setBackground(Color.WHITE);
                 } else if (g.getCell(i, j) instanceof DirectionnalCell) {
-                    Image newConveyorSize = conveyors[((DirectionnalCell) g.getCell(i, j)).getImage()].getScaledInstance((int) (cellSize *0.75), (int) (cellSize *0.75), Image.SCALE_SMOOTH);
+                    Image newConveyorSize = directionnal[((DirectionnalCell) g.getCell(i, j)).getImage()].getScaledInstance((int) (cellSize *0.75), (int) (cellSize *0.75), Image.SCALE_SMOOTH);
                     ImageIcon icon = new ImageIcon(newConveyorSize);
                     tabC[g.getCell(i, j).getY()][g.getCell(i, j).getX()].add(new JLabel(icon));
                     setVisible(true);
@@ -169,7 +169,7 @@ public class MF extends JFrame implements Observer {
             } else if (g.getCell(x, y) instanceof Air) {
                 tabC[g.getCell(x, y).getY()][g.getCell(x, y).getX()].setBackground(Color.WHITE);
             } else if (g.getCell(x, y) instanceof DirectionnalCell) {
-                Image newConveyorSize = conveyors[((DirectionnalCell) g.getCell(x, y)).getImage()].getScaledInstance((int) (cellSize *0.75), (int) (cellSize *0.75), Image.SCALE_SMOOTH);
+                Image newConveyorSize = directionnal[((DirectionnalCell) g.getCell(x, y)).getImage()].getScaledInstance((int) (cellSize *0.75), (int) (cellSize *0.75), Image.SCALE_SMOOTH);
                 ImageIcon icon = new ImageIcon(newConveyorSize);
                 tabC[g.getCell(x, y).getY()][g.getCell(x, y).getX()].add(new JLabel(icon));
                 setVisible(true);

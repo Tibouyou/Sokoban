@@ -14,7 +14,7 @@ public class Menu extends JFrame {
     public Menu(MF gameFrame) {
         setContentPane(panel1);
         this.gameFrame = gameFrame;
-        setTitle("Sokoban");
+        setTitle("SokIOban");
         setSize(800, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
